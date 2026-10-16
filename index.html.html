@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dijital Dünya Kâşifi</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e8f6ff;--bg2:#d3ecff;--ink:#1b1464;--card:#fff;--mint:#19c98f;--sun:#ffc93c;--coral:#ff5d6c;--sky:#2f9bff;--line:#b9dcf7;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#140f45;--bg2:#1f1868;--ink:#f1efff;--card:#251d78;--line:#4a3fb0}}
+:root[data-theme="dark"]{--bg:#140f45;--bg2:#1f1868;--ink:#f1efff;--card:#251d78;--line:#4a3fb0}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:radial-gradient(circle at 15% 0,var(--bg2),var(--bg) 60%);color:var(--ink);font-family:'Baloo 2','Trebuchet MS',system-ui,sans-serif;font-size:19px;line-height:1.35;min-height:100vh}
+#app{max-width:760px;margin:0 auto;padding:16px}
+h1{font-size:2.3rem;margin:.2em 0;font-weight:800;line-height:1.05}
+h2{font-size:1.6rem;margin:.2em 0;font-weight:800}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.badges{font-size:1.7rem;letter-spacing:2px}
+button{font:inherit;cursor:pointer;border:0;border-radius:18px;padding:12px 20px;font-weight:700;color:#fff;background:var(--sky);box-shadow:0 5px 0 rgba(0,0,0,.2);transition:transform .08s}
+button:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.2)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:4px solid var(--sun);outline-offset:2px}
+button.ok{background:var(--mint)}button.no{background:var(--coral)}button.ghost{background:transparent;color:var(--ink);box-shadow:none;border:2px solid var(--line);padding:6px 14px}
+.hero{display:flex;align-items:center;gap:12px}
+.bubble{background:var(--card);border:3px solid var(--line);border-radius:22px;padding:12px 16px;position:relative;flex:1}
+.map{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.st{background:var(--card);border:3px solid var(--line);border-radius:26px;padding:14px 10px;text-align:center;color:var(--ink);box-shadow:0 6px 0 var(--line);position:relative}
+.st .e{font-size:3.4rem;display:block}
+.st b{display:block;font-size:1.15rem}
+.st small{display:block;opacity:.8;font-size:.85rem;line-height:1.15}
+.st.done{border-color:var(--mint);box-shadow:0 6px 0 var(--mint)}
+.st.done::after{content:"⭐";position:absolute;top:-12px;right:-6px;font-size:2rem}
+.panel{background:var(--card);border:3px solid var(--line);border-radius:26px;padding:16px;margin-top:10px}
+input[type=text],textarea{width:100%;font:inherit;font-size:1.3rem;padding:12px 14px;border-radius:16px;border:3px solid var(--line);background:var(--bg);color:var(--ink)}
+.rules{list-style:none;padding:0;margin:10px 0;display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:.95rem}
+.rules li{padding:6px 10px;border-radius:12px;background:var(--bg)}
+.rules li.y{background:rgba(25,201,143,.22)}
+.tower{display:flex;justify-content:center;margin:8px 0}
+.meter{height:16px;border-radius:99px;background:var(--bg);overflow:hidden;border:2px solid var(--line)}
+.meter i{display:block;height:100%;width:0;background:var(--coral);transition:width .3s,background .3s}
+.situ{font-size:1.45rem;text-align:center;padding:10px 4px}
+.situ .em{font-size:4rem;display:block}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.fb{margin-top:12px;padding:12px 14px;border-radius:16px;font-weight:700}
+.fb.g{background:rgba(25,201,143,.25)}.fb.b{background:rgba(255,93,108,.25)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{background:var(--bg);border:3px solid var(--line);border-radius:22px;padding:12px 6px;text-align:center;color:var(--ink);box-shadow:none;font-size:.95rem}
+.tile .e{font-size:3rem;display:block}
+.tile.fixed{border-color:var(--mint);background:rgba(25,201,143,.22)}
+.tile.warn{border-color:var(--coral)}
+.tile.warn .e{animation:wob 1s infinite}
+@keyframes wob{50%{transform:rotate(-8deg) scale(1.08)}}
+.opt{display:block;width:100%;text-align:left;margin-top:10px;background:var(--bg);color:var(--ink);border:3px solid var(--line);box-shadow:none}
+.opt.right{background:rgba(25,201,143,.3);border-color:var(--mint)}.opt.wrong{background:rgba(255,93,108,.3);border-color:var(--coral)}
+.prog{font-size:.95rem;opacity:.8}
+.big{font-size:5rem;text-align:center}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:420px){body{font-size:17px}h1{font-size:1.9rem}.rules{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+var done={},app=document.getElementById('app');
+var BOT='<svg width="96" height="96" viewBox="0 0 96 96" aria-hidden="true"><line x1="48" y1="6" x2="48" y2="20" stroke="#1b1464" stroke-width="4"/><circle cx="48" cy="6" r="6" fill="#ff5d6c"/><rect x="16" y="20" width="64" height="52" rx="18" fill="#2f9bff" stroke="#1b1464" stroke-width="4"/><rect x="26" y="32" width="44" height="26" rx="12" fill="#e8f6ff"/><circle cx="39" cy="45" r="6" fill="#1b1464"/><circle cx="57" cy="45" r="6" fill="#1b1464"/><path d="M40 64q8 6 16 0" stroke="#e8f6ff" stroke-width="4" fill="none" stroke-linecap="round"/><rect x="6" y="38" width="10" height="18" rx="5" fill="#ffc93c" stroke="#1b1464" stroke-width="3"/><rect x="80" y="38" width="10" height="18" rx="5" fill="#ffc93c" stroke="#1b1464" stroke-width="3"/><rect x="30" y="74" width="36" height="16" rx="8" fill="#19c98f" stroke="#1b1464" stroke-width="4"/></svg>';
+function $(h){app.innerHTML=h;window.scrollTo(0,0)}
+function stars(){var s='';['pw','et','sg','qz'].forEach(function(k){s+=done[k]?'⭐':'☆'});return s}
+function hdr(t){return '<div class="top"><button class="ghost" onclick="home()">🏠 Harita</button><span class="badges" aria-label="Rozetler">'+stars()+'</span></div>'+(t?'<h2>'+t+'</h2>':'')}
+function home(){
+ var all=done.pw&&done.et&&done.sg&&done.qz;
+ $('<div class="top"><span></span><span class="badges">'+stars()+'</span></div><div class="hero">'+BOT+'<div class="bubble"><b>Selam Kâşif!</b> Ben Bit. Dijital Dünya\'yı güvende tutmak için 4 görevimiz var. Hepsini bitirince Süper Kâşif olacaksın! 🚀</div></div><h1>Dijital Dünya Kâşifi</h1>'+
+ '<div class="map">'+st('pw','🏰','Şifre Kalesi','Güçlü parola kur')+st('et','🃏','Doğru mu, Yanlış mı?','Etik ve güvenlik kartları')+st('sg','🕵️','Sağlık Dedektifi','Hataları bul ve düzelt')+st('qz','🏆','Final Macerası','Bilgini sına')+'</div>'+(all?'<div class="row"><button class="ok" onclick="finish()">🎉 Süper Kâşif Belgem</button></div>':''));
+}
+function st(k,e,t,s){return '<button class="st'+(done[k]?' done':'')+'" onclick="'+k+'()"><span class="e">'+e+'</span><b>'+t+'</b><small>'+s+'</small></button>'}
+
+/* 1 ŞİFRE KALESİ */
+var COMMON=['123456','12345678','password','sifre','şifre','qwerty','111111','123456789'];
+function pw(){
+ $(hdr('🏰 Şifre Kalesi')+'<div class="panel"><div class="hero">'+BOT+'<div class="bubble">Kale kapısını koruyacak bir şifre uydur! <b>Gerçek şifreni yazma</b>, sadece dene.</div></div>'+
+ '<div class="tower"><svg id="tw" width="220" height="190" viewBox="0 0 220 190" aria-hidden="true"></svg></div>'+
+ '<input type="text" id="pi" placeholder="Şifreni buraya yaz…" autocomplete="off" aria-label="Deneme şifresi" oninput="chk()">'+
+ '<div class="meter" style="margin-top:12px"><i id="mt"></i></div><ul class="rules" id="rl"></ul><div id="pm"></div></div>');
+ chk();
+}
+function chk(){
+ var v=(document.getElementById('pi')||{}).value||'';
+ var R=[['En az 8 karakter',v.length>=8],['Büyük harf',/[A-ZÇĞİÖŞÜ]/.test(v)],['Küçük harf',/[a-zçğıöşü]/.test(v)],['Rakam',/\d/.test(v)],['Sembol (!?*_)',/[^A-Za-z0-9ÇĞİÖŞÜçğıöşü\s]/.test(v)],['Kolay tahmin edilemez',v.length>0&&COMMON.indexOf(v.toLowerCase())<0]];
+ var n=R.filter(function(r){return r[1]}).length;
+ document.getElementById('rl').innerHTML=R.map(function(r){return '<li class="'+(r[1]?'y':'')+'">'+(r[1]?'✅ ':'⬜ ')+r[0]+'</li>'}).join('');
+ var m=document.getElementById('mt');m.style.width=(n/6*100)+'%';m.style.background=n<3?'var(--coral)':n<6?'var(--sun)':'var(--mint)';
+ var h=20+n*24,c=n<3?'#ff5d6c':n<6?'#ffc93c':'#19c98f';
+ var t='<rect x="30" y="'+(180-h)+'" width="160" height="'+h+'" rx="6" fill="'+c+'" stroke="#1b1464" stroke-width="4"/>';
+ for(var i=0;i<4;i++)t+='<rect x="'+(30+i*42)+'" y="'+(170-h)+'" width="26" height="16" fill="'+c+'" stroke="#1b1464" stroke-width="3"/>';
+ t+='<path d="M95 180v-34a15 15 0 0130 0v34z" fill="#1b1464"/><text x="110" y="'+(Math.max(40,170-h)-8)+'" font-size="30" text-anchor="middle">'+(n==6?'🛡️':n<3?'😈':'🚩')+'</text>';
+ document.getElementById('tw').innerHTML=t;
+ var pm=document.getElementById('pm');
+ if(n==6){done.pw=1;pm.innerHTML='<div class="fb g">🎉 Kale artık güvende! Uzun, karışık ve tahmin edilmesi zor şifreler hacker\'ların işini zorlaştırır.</div><div class="row"><button class="ok" onclick="home()">Göreve devam →</button></div>'}
+ else pm.innerHTML=v?'<div class="fb b">Kapı daha güçlenmeli. Eksik kuralları tamamla!</div>':'';
+}
+
+/* 2 KARTLAR */
+var CARDS=[['🖼️','İnternetten bulduğum resmi, sahibinin adını yazmadan ödevime koydum.',0,'Başkasının emeğine saygı göstermeliyiz. Kaynağı belirtmek ve izin kurallarına uymak gerekir.'],
+['📸','Arkadaşımın utandığı fotoğrafı sınıf grubuna attım.',0,'Bu siber zorbalıktır. Kimseyi utandıracak şey paylaşılmaz.'],
+['🤝','Arkadaşımın izniyle ortak fotoğrafımızı paylaştım.',1,'Başkasının görüntüsünü paylaşmadan önce izin almak doğrudur.'],
+['🎁','Tanımadığım biri "Hediye kazandın!" diye link yolladı, tıkladım.',0,'Şüpheli bağlantılar açılmaz. Zararlı yazılım ya da tuzak olabilir.'],
+['🔒','Hesabımın gizlilik ayarlarını sadece arkadaşlarım görecek şekilde yaptım.',1,'Gizlilik ayarları kişisel bilgilerini korur.'],
+['🔑','Şifremi en iyi arkadaşıma söyledim.',0,'Şifre sadece sana aittir. Aileninle bile güvenli yolla paylaşılır.'],
+['💬','Tanımadığım biri mesaj attı. Cevap vermeden ailemize haber verdim.',1,'Tanımadığın kişilere cevap verme, güvendiğin bir yetişkine söyle.']];
+var ci=0,cs=0;
+function et(){ci=0;cs=0;card()}
+function card(){
+ if(ci>=CARDS.length){done.et=1;$(hdr('🃏 Harika!')+'<div class="panel"><div class="big">🎯</div><p class="situ">'+CARDS.length+' karttan <b>'+cs+'</b> tanesini doğru bildin!</p><div class="row"><button class="ok" onclick="home()">Haritaya dön</button></div></div>');return}
+ var c=CARDS[ci];
+ $(hdr('🃏 Doğru mu, Yanlış mı?')+'<div class="panel"><div class="prog">Kart '+(ci+1)+' / '+CARDS.length+'</div><div class="situ"><span class="em">'+c[0]+'</span>'+c[1]+'</div><div class="row" id="br"><button class="ok" onclick="ans(1)">✅ Uygun</button><button class="no" onclick="ans(0)">❌ Uygun değil</button></div><div id="fb"></div></div>');
+}
+function ans(a){
+ var c=CARDS[ci],ok=a==c[2];if(ok)cs++;
+ document.getElementById('br').innerHTML='';
+ document.getElementById('fb').innerHTML='<div class="fb '+(ok?'g':'b')+'">'+(ok?'🎉 Doğru! ':'🤔 Dikkat! ')+c[3]+'</div><div class="row"><button onclick="ci++;card()">Sıradaki →</button></div>';
+}
+
+/* 3 DEDEKTİF */
+var DET=[['📏','Ekran burnumun dibinde',1,'Ekrana yaklaşık bir kol boyu uzakta otur.'],['🪑','Kambur oturuyorum',1,'Sırtın dik, ayakların yerde olsun.'],['🌑','Oda zifiri karanlık',1,'Oda yeterince aydınlık olmalı. Gözlerin yorulmasın.'],['⏰','4 saattir hiç ara vermedim',1,'Düzenli mola ver. Kalk, uzağa bak, hareket et.'],['💧','Su içip kısa mola veriyorum',0,'Bu doğru! Mola vermek vücudunu dinlendirir.'],['🌳','Dışarıda arkadaşlarımla oynuyorum',0,'Bu da harika! Ekran süresi dengede olmalı.']];
+var fx={};
+function sg(){fx={};det()}
+function det(){
+ var n=DET.filter(function(d,i){return d[2]&&fx[i]}).length;
+ var t=hdr('🕵️ Sağlık Dedektifi')+'<div class="panel"><div class="bubble" style="margin-bottom:12px">Ekran başındaki Deniz\'in <b>4 hatası</b> var. Hatalı olanlara dokunup düzelt! ('+n+' / 4)</div><div class="grid">';
+ DET.forEach(function(d,i){t+='<button class="tile '+(fx[i]?'fixed':(d[2]?'warn':''))+'" onclick="tap('+i+')"><span class="e">'+(fx[i]?'✅':d[0])+'</span>'+d[1]+'</button>'});
+ t+='</div><div id="dm"></div></div>';$(t);
+ if(n==4){done.sg=1;document.getElementById('dm').innerHTML='<div class="fb g">🕵️ Süper dedektif! Sağlıklı kullanım: doğru oturuş, uygun mesafe, iyi ışık ve düzenli mola.</div><div class="row"><button class="ok" onclick="home()">Göreve devam →</button></div>'}
+}
+function tap(i){
+ var d=DET[i];fx[i]=1;det();
+ var m=document.getElementById('dm');if(!done.sg||!m.innerHTML)m.insertAdjacentHTML('afterbegin','<div class="fb '+(d[2]?'g':'g')+'" style="margin-bottom:8px">'+(d[2]?'🔧 Düzeltildi! ':'')+d[3]+'</div>');
+}
+
+/* 4 FİNAL */
+var Q=[['Hangisi en güçlü paroladır?',['ali2015','12345678','Mavi!Kedi_47Ay'],2,'Uzun, karışık ve sembollü şifreler güçlüdür.'],
+['Ekran başında nasıl davranmalıyız?',['Hiç ara vermeden oynarız','Düzenli aralıklarla kısa molalar veririz','Sadece geceleri bakarız'],1,'Düzenli mola gözlerini ve vücudunu korur.'],
+['Bilgi güvenliğinde "gizlilik" ne demektir?',['Bilgiyi sadece yetkili kişilerin görebilmesi','Bilgiyi hızlıca silmek','İnterneti hızlandırmak'],0,'Gizlilik: özel bilgiler sadece izinli kişilere açıktır.'],
+['"Bütünlük" ne demektir?',['Bilgiyi herkesle paylaşmak','Bilginin izinsiz değiştirilememesi','Ekranı büyütmek'],1,'Bütünlük: bilgi doğru kalır, kimse izinsiz bozamaz.'],
+['"Erişilebilirlik" ne demektir?',['Bilgiye ihtiyaç duyunca ulaşabilmek','Şifreyi unutmak','Bilgiyi saklamak'],0,'Erişilebilirlik: bilgi lazım olduğunda hazırdır.'],
+['Siber zorbalık gördüğünde ne yaparsın?',['Ben de katılırım','Kanıtı saklar, güvendiğim yetişkine haber veririm','Hiç görmemiş gibi yaparım'],1,'Zorbalığa katılmaz, yetişkinden yardım isteriz.']];
+var qi=0,qs=0;
+function qz(){qi=0;qs=0;ques()}
+function ques(){
+ if(qi>=Q.length){done.qz=1;$(hdr('🏆 Final bitti!')+'<div class="panel"><div class="big">'+(qs>=5?'🏅':'👍')+'</div><p class="situ">'+Q.length+' sorudan <b>'+qs+'</b> tanesini bildin!</p><div class="row"><button class="ok" onclick="home()">Haritaya dön</button></div></div>');return}
+ var q=Q[qi],t=hdr('🏆 Final Macerası')+'<div class="panel"><div class="prog">Soru '+(qi+1)+' / '+Q.length+'</div><p class="situ" style="font-weight:700">'+q[0]+'</p>';
+ q[1].forEach(function(o,i){t+='<button class="opt" onclick="pick(this,'+i+')">'+['A','B','C'][i]+') '+o+'</button>'});
+ $(t+'<div id="fb"></div></div>');
+}
+function pick(b,i){
+ var q=Q[qi],bs=document.querySelectorAll('.opt');
+ bs.forEach(function(x,k){x.disabled=true;if(k==q[2])x.classList.add('right')});
+ if(i==q[2])qs++;else b.classList.add('wrong');
+ document.getElementById('fb').innerHTML='<div class="fb '+(i==q[2]?'g':'b')+'">'+(i==q[2]?'🎉 Doğru! ':'🤔 Olmadı. ')+q[3]+'</div><div class="row"><button onclick="qi++;ques()">Devam →</button></div>';
+}
+
+/* BELGE */
+function finish(){
+ $(hdr('')+'<div class="panel" style="text-align:center"><div class="big">🎖️</div><h1>Süper Dijital Kâşif!</h1><p>Dört görevi tamamladın. Dijital dünyada güvenli, saygılı ve sağlıklı davranmayı öğrendin.</p><div class="hero">'+BOT+'<div class="bubble" style="text-align:left"><b>Son görev:</b> Bugün öğrendiğin en önemli kuralı kendi cümlenle yaz.</div></div><textarea rows="3" aria-label="Kendi cümlen" placeholder="Bugün öğrendiğim en önemli kural…"></textarea><div class="row"><button class="ok" onclick="home()">Haritaya dön</button></div></div>');
+}
+home();
+</script>
+</body>
+</html>
